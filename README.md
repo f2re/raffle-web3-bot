@@ -1,8 +1,19 @@
 # Web3 Raffle Telegram Mini App
 
-Автоматизированное Web3 приложение для проведения провабельно честных розыгрышей в Telegram с интеграцией TON кошелька.
+> Автоматизированное Web3 приложение для проведения провабельно честных розыгрышей в Telegram с интеграцией TON кошелька.
 
-## Особенности
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Node](https://img.shields.io/badge/node-20+-green.svg)](https://nodejs.org/)
+[![Docker](https://img.shields.io/badge/docker-compose-blue.svg)](https://docs.docker.com/compose/)
+
+## 📑 Документация
+
+- **[SETUP.md](SETUP.md)** - Полное руководство по установке и запуску (Docker и без Docker)
+- **[DEVELOPMENT.md](DEVELOPMENT.md)** - Руководство для разработчиков
+- **[API Documentation](http://localhost:8000/docs)** - OpenAPI/Swagger документация (после запуска)
+
+## ✨ Особенности
 
 - 🎯 **3 типа розыгрышей**: Express (1 TON), Standard (2 TON), Premium (5 TON)
 - 🔐 **Провабельно честно**: Использует Random.org API для генерации победителя
@@ -10,49 +21,68 @@
 - 🤖 **Telegram Bot**: Интеграция с Telegram Mini App
 - ⚡ **Автоматизация**: Автоматический запуск розыгрышей и выплата призов
 - 📊 **Real-time обновления**: WebSocket для live-обновлений
+- 🔒 **Безопасность**: Проверка Telegram WebApp auth, валидация транзакций, rate limiting
+- 📦 **Docker**: Полная контейнеризация для простого развертывания
 
-## Технологический стек
+## 🛠 Технологический стек
 
 ### Backend
-- Python 3.11+
-- FastAPI (REST API)
-- aiogram 3.x (Telegram Bot)
-- PostgreSQL 14+ (база данных)
-- Redis 6+ (кэш)
-- SQLAlchemy 2.0 (ORM)
-- APScheduler (планировщик задач)
-- pytoniq (TON blockchain)
+- **Python 3.11+** - Основной язык
+- **FastAPI** - Современный, быстрый веб-фреймворк
+- **aiogram 3.x** - Telegram Bot framework
+- **PostgreSQL 14+** - Основная база данных
+- **Redis 7+** - Кэш и очереди
+- **SQLAlchemy 2.0** - Async ORM
+- **Alembic** - Миграции базы данных
+- **APScheduler** - Планировщик задач
+- **pytoniq** - TON blockchain интеграция
 
 ### Frontend
-- Vue.js 3.4+ с TypeScript
-- Vite (сборка)
-- Pinia (управление состоянием)
-- TailwindCSS (стилизация)
-- @tonconnect/ui-vue (TON кошельки)
-- @telegram-apps/sdk-vue (Telegram интеграция)
+- **Vue.js 3.4+** - Progressive JavaScript framework
+- **TypeScript 5.6+** - Type safety
+- **Vite 5.4+** - Next generation build tool
+- **Pinia** - State management
+- **TailwindCSS** - Utility-first CSS
+- **@tonconnect/ui-vue** - TON wallet integration
+- **axios** - HTTP client
 
-## Быстрый старт
+### Infrastructure
+- **Docker** - Контейнеризация
+- **Docker Compose** - Оркестрация сервисов
+- **Nginx** - Reverse proxy (production)
+
+## 🚀 Быстрый старт
 
 ### Требования
 
-- Docker & Docker Compose
-- Node.js 20+ (для локальной разработки)
-- Python 3.11+ (для локальной разработки)
+#### С Docker (рекомендуется):
+- Docker 20.10+
+- Docker Compose v2
+- Git
+- 2GB+ RAM
+- 10GB+ свободного места
 
-### Установка
+#### Без Docker:
+- Python 3.11+
+- Node.js 20+
+- PostgreSQL 14+
+- Redis 7+
+- Git
 
-1. Клонировать репозиторий:
+### Установка с Docker
+
+1. **Клонировать репозиторий**:
 ```bash
 git clone https://github.com/f2re/raffle-web3-bot.git
 cd raffle-web3-bot
 ```
 
-2. Создать .env файл:
+2. **Создать .env файл**:
 ```bash
 cp .env.example .env
 ```
 
-3. Заполнить конфигурацию в .env:
+3. **Настроить .env** - Заполнить обязательные параметры:
 ```env
 # PostgreSQL
 POSTGRES_PASSWORD=your_strong_password
@@ -61,50 +91,66 @@ POSTGRES_PASSWORD=your_strong_password
 REDIS_PASSWORD=your_redis_password
 
 # Backend
-SECRET_KEY=your_secret_key_32_chars_min
+SECRET_KEY=your_secret_key_min_32_characters
 
-# Telegram
-TELEGRAM_BOT_TOKEN=your_bot_token_from_botfather
+# Telegram (получить у @BotFather)
+TELEGRAM_BOT_TOKEN=1234567890:ABCdefGHIjklMNOpqrsTUVwxyz
+ADMIN_USER_ID=123456789
 
-# TON Blockchain
-RAFFLE_WALLET_ADDRESS=your_ton_wallet_address
-RAFFLE_WALLET_MNEMONIC=your 24 word mnemonic
+# TON Blockchain (получить на toncenter.com)
+RAFFLE_WALLET_ADDRESS=UQxxxx...
+RAFFLE_WALLET_MNEMONIC=word1 word2 ... word24
 TON_CENTER_API_KEY=your_toncenter_api_key
 
-# Random.org
+# Random.org (получить на random.org)
 RANDOM_ORG_API_KEY=your_random_org_api_key
 
 # Frontend
-VITE_API_URL=https://your-backend-url.com/api/v1
-VITE_WS_URL=wss://your-backend-url.com/ws
+VITE_API_URL=https://your-backend.com/api/v1
+VITE_WS_URL=wss://your-backend.com/ws
 ```
 
-4. Запустить с Docker Compose:
+4. **Собрать и запустить**:
 ```bash
+# Собрать образы
+make build
+
+# Запустить все сервисы
 make up
-# или
-docker-compose up -d
+
+# Проверить статус
+make status
 ```
 
-5. Инициализировать базу данных:
+5. **Инициализировать базу данных**:
 ```bash
 make init
-# или
-docker-compose exec backend python -m app.scripts.init_raffles
 ```
 
-## Команды Makefile
+6. **Проверить работу**:
+- Backend API: http://localhost:8000
+- Frontend: http://localhost:3000
+- API Docs: http://localhost:8000/docs
+
+### Установка без Docker
+
+Смотрите подробные инструкции в **[SETUP.md](SETUP.md#запуск-без-docker)**
+
+## 📋 Команды управления (Makefile)
 
 ```bash
 make help       # Показать все доступные команды
-make build      # Собрать Docker образы
+make build      # Собрать Docker образы с чистым кэшем
 make up         # Запустить все сервисы
 make down       # Остановить все сервисы
-make logs       # Показать логи
+make logs       # Показать логи всех сервисов
 make restart    # Перезапустить сервисы
-make clean      # Очистить все данные
+make status     # Показать статус сервисов
+make health     # Проверить здоровье сервисов
+make clean      # Очистить все данные и volumes
 make backup     # Создать резервную копию БД
-make init       # Инициализировать БД
+make restore    # Восстановить БД из резервной копии
+make init       # Инициализировать базу данных
 ```
 
 ## Структура проекта
@@ -213,30 +259,99 @@ help - Помощь
 - ✅ Все пароли через .env
 - ✅ Провабельно честный розыгрыш (Random.org)
 
-## Разработка
+## 💻 Разработка
 
-### Backend development
+Подробное руководство по разработке смотрите в **[DEVELOPMENT.md](DEVELOPMENT.md)**
+
+### Quick start для разработки
+
+#### Backend:
 ```bash
 cd backend
-python -m venv venv
+python3.11 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-python -m app.main
+uvicorn app.main:app --reload
 ```
 
-### Frontend development
+#### Frontend:
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
 
-## Деплой в production
+## 🚢 Деплой в production
 
-1. Настроить .env с production значениями
-2. Настроить SSL сертификаты
-3. Запустить с production профилем:
+### С Docker Compose
+
+1. Настроить production .env файл
+2. Настроить SSL сертификаты в `nginx/ssl/`
+3. Создать `nginx/nginx.conf` для production
+4. Запустить с production профилем:
+
 ```bash
-docker-compose --profile production up -d
+# Собрать production образы
+make build
+
+# Запустить с nginx reverse proxy
+docker compose --profile production up -d
+
+# Проверить статус
+make health
 ```
+
+### Переменные окружения для production
+
+```env
+ENVIRONMENT=production
+LOG_LEVEL=INFO
+
+# Использовать HTTPS URLs
+VITE_API_URL=https://your-domain.com/api/v1
+VITE_WS_URL=wss://your-domain.com/ws
+
+# Настроить CORS
+CORS_ORIGINS=https://your-miniapp-domain.com,https://your-production-domain.com
+
+# Использовать сильные пароли
+POSTGRES_PASSWORD=<strong-random-password>
+REDIS_PASSWORD=<strong-random-password>
+SECRET_KEY=<strong-random-secret-min-32-chars>
+```
+
+## 🔧 Устранение неполадок
+
+### Ошибка сборки frontend (vue-tsc)
+
+**Проблема**: `Search string not found: "/supportedTSExtensions = .*(?=;)/"`
+
+**Решение**: Обновлены версии в `frontend/package.json`:
+```json
+{
+  "devDependencies": {
+    "vue-tsc": "^2.1.10",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  }
+}
+```
+
+### Redis healthcheck fails
+
+**Проблема**: Redis healthcheck не проходит
+
+**Решение**: Исправлена команда healthcheck в `docker-compose.yml`:
+```yaml
+healthcheck:
+  test: ["CMD", "redis-cli", "--no-auth-warning", "-a", "${REDIS_PASSWORD:-redis}", "ping"]
+```
+
+### Docker compose version warning
+
+**Проблема**: `WARN[0000] the attribute 'version' is obsolete`
+
+**Решение**: Удалена строка `version: '3.8'` из `docker-compose.yml`
+
+Больше решений проблем смотрите в **[SETUP.md](SETUP.md#устранение-неполадок)**
 
