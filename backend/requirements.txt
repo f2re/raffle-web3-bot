@@ -29,6 +29,7 @@ tonsdk==1.0.15
 # HTTP Client
 aiohttp==3.9.1
 httpx==0.25.2
+requests==2.31.0
 
 # Validation
 pydantic==2.5.2

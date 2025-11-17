@@ -17,7 +17,7 @@ export const useWalletStore = defineStore('wallet', () => {
     userFriendlyAddress.value = ''
   }
 
-  const sendPayment = async (amount: number, memo: string): Promise<string> => {
+  const sendPayment = async (_amount: number, _memo: string): Promise<string> => {
     if (!wallet.value) {
       throw new Error('Wallet not connected')
     }

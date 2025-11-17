@@ -32,9 +32,7 @@ export default defineConfig(({ mode }) => {
       rollupOptions: {
         output: {
           manualChunks: {
-            'vendor': ['vue', 'vue-router', 'pinia'],
-            'ton': ['@tonconnect/ui-vue', '@ton/ton'],
-            'telegram': ['@telegram-apps/sdk-vue']
+            'vendor': ['vue', 'vue-router', 'pinia']
           }
         }
       }
