@@ -8,9 +8,16 @@ from app.config import settings
 from app.database.models import Base
 
 
-# Create async engine
+# Create async engine - handle different database types
+database_url = settings.DATABASE_URL
+if database_url.startswith("postgresql://"):
+    database_url = database_url.replace("postgresql://", "postgresql+asyncpg://")
+elif database_url.startswith("sqlite://"):
+    # SQLite needs aiosqlite driver for async operations
+    database_url = database_url.replace("sqlite://", "sqlite+aiosqlite://")
+
 engine = create_async_engine(
-    settings.DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://"),
+    database_url,
     echo=settings.ENVIRONMENT == "development",
     poolclass=NullPool,
 )

@@ -21,14 +21,15 @@ from app.bot.handlers import start
 bot = Bot(token=settings.TELEGRAM_BOT_TOKEN, parse_mode=ParseMode.HTML)
 dp = Dispatcher()
 
-# Register bot handlers
-dp.include_router(start.router)
-
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """Application lifespan"""
     logger.info("Starting application...")
+
+    # Register bot handlers (do this in lifespan to avoid reload issues)
+    if not start.router._parent_router:  # Only attach if not already attached
+        dp.include_router(start.router)
 
     # Initialize database
     await init_db()

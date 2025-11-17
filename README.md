@@ -43,7 +43,7 @@
 
 1. Клонировать репозиторий:
 ```bash
-git clone https://github.com/yourusername/raffle-web3-bot.git
+git clone https://github.com/f2re/raffle-web3-bot.git
 cd raffle-web3-bot
 ```
 
@@ -240,14 +240,3 @@ npm run dev
 docker-compose --profile production up -d
 ```
 
-## Поддержка
-
-Если вы нашли баг или хотите предложить улучшение, создайте issue в GitHub.
-
-## Лицензия
-
-MIT
-
-## Авторы
-
-Created with Claude Code

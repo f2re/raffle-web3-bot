@@ -6,11 +6,12 @@ import json
 from typing import Dict, Optional
 from urllib.parse import parse_qs
 
-from fastapi import HTTPException, Header
+from fastapi import HTTPException, Header, Depends
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.config import settings
 from app.database.crud import UserCRUD
+from app.database.session import get_db
 
 
 def verify_telegram_webapp_data(init_data: str) -> Dict:
@@ -72,7 +73,7 @@ def verify_telegram_webapp_data(init_data: str) -> Dict:
 
 async def verify_telegram_auth(
     x_telegram_init_data: Optional[str] = Header(None),
-    db: AsyncSession = None
+    db: AsyncSession = Depends(get_db)
 ):
     """
     FastAPI dependency for verifying Telegram authentication

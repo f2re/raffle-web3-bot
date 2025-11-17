@@ -106,3 +106,7 @@ class UserStatsResponse(BaseModel):
 class HistoryResponse(BaseModel):
     raffles: List[RaffleResponse]
     total: int
+
+
+# Rebuild models with forward references
+RaffleDetailResponse.model_rebuild()
