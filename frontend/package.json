@@ -1,0 +1,31 @@
+{
+  "name": "raffle-web3-frontend",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "@tonconnect/ui-vue": "^2.0.0",
+    "@telegram-apps/sdk-vue": "^1.0.0",
+    "@telegram-apps/telegram-ui": "^2.1.0",
+    "@ton/ton": "^13.11.0",
+    "@ton/crypto": "^3.2.0",
+    "axios": "^1.6.0",
+    "@vueuse/core": "^10.7.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.0",
+    "typescript": "^5.3.0",
+    "vue-tsc": "^1.8.27",
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.4.0",
+    "autoprefixer": "^10.4.16",
+    "postcss": "^8.4.32"
+  }
+}
